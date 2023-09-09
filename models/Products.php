@@ -22,11 +22,11 @@ class Products extends model
         return $arrayFromRecords;
     }
     //segunda maneira de pegar o nome de uma marca (relacionamento entre tabelas)
-    public function getListOfProducts()
+    public function getListOfProducts($offseat = 0, $limit = 3)
     {
         $arrayFromRecords = array();
 
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT * FROM products LIMIT $offseat, $limit";
         $sql = $this->db->query($sql);
 
         if ($sql->rowCount() > 0) {
@@ -43,7 +43,8 @@ class Products extends model
 
         return $arrayFromRecords;
     }
-    public function getImagesById(int $id) {
+    public function getImagesById(int $id)
+    {
         $imagesUrl = array();
 
         $sql = "SELECT url FROM products_images WHERE id_product = :id";
@@ -51,14 +52,19 @@ class Products extends model
         $sql->bindValue(':id', $id);
         $sql->execute();
 
-        if($sql->rowCount() > 0) {
+        if ($sql->rowCount() > 0) {
             $imagesUrl = $sql->fetchAll();
         }
 
         return $imagesUrl;
     }
 
-    public function getTotal() {
-        
+    public function getTotal()
+    {
+        $sql = "SELECT COUNT(*) as c FROM products";
+        $sql = $this->db->query($sql);
+        $sql = $sql->fetch();
+        /* var_dump($sql['c']);  */
+        return $sql['c']; 
     }
 }

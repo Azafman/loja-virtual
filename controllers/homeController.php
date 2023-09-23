@@ -1,6 +1,7 @@
 <?php
 require 'core/Controller.php';
 require 'models/Products.php';
+require 'models/Categories.php';
 class homeController extends controller
 {
 
@@ -15,6 +16,7 @@ class homeController extends controller
     {
         $dados = array();
         $products = new Products();
+        $categories = new Categories();
 
         $currentPage = 1;//por padrão => página atual
         $offset = 0;//por padrão => se estamos na página um, qual será o primeiro item que será exibido ?
@@ -31,6 +33,8 @@ class homeController extends controller
         $dados['totalItem'] = $products->getTotal();
         $dados['numberOfpages'] = ceil($dados['totalItem'] / $limit);//número de páginas
         $dados['currentPage'] = $currentPage;
+
+        $dados['categories'] = $categories->getList();
 
         $this->loadTemplate('home', $dados);
     }

@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<title>Loja 2.0</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">	
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
 </head>
@@ -74,9 +74,21 @@
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php $this->lang->get('SELECTCATEGORY'); ?>
 							<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Page 1-1</a></li>
-							<li><a href="#">Page 1-2</a></li>
-							<li><a href="#">Page 1-3</a></li>
+							<?php foreach ($viewData['categories'] as $category) : ?>
+								<li>
+									<a href="<?= BASE_URL . 'categories/enter/' . $category['id'] ?>">
+										<?= $category['name'] ?>
+									</a>
+								</li>
+								<?php
+								if (count($category['subs']) > 0) {
+									$this->loadView('components/sub_category_menu', array(
+										'subs' => $category['subs'],
+										'level' => 1
+									));
+								}
+								?>
+							<?php endforeach; ?>
 						</ul>
 					</li>
 					<li><a href="#">Categoria X</a></li>
